@@ -201,7 +201,7 @@ async function main() {
       .filter(([who]) => who === code)
       .reduce((sum, [, amount]) => sum + parseEther(amount), 0n);
     await confirm(
-      await deployerWallet.sendTransaction({ to: account.address, value: spend + FAN_GAS_BUFFER }),
+      await deployerWallet.sendTransaction({ to: account.address, value: spend + FAN_GAS_BUFFER, gas: 60_000n }),
       `fund ${code}`,
     );
     await confirm(
