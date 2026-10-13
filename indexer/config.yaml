@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: dropown-indexer
+description: DropOwn campaigns, contributions, referral conversions and revenue on Monad Testnet
+chains:
+  - id: 10143
+    start_block: 70575050
+    contracts:
+      - name: DropOwnFactory
+        address: "0xe461122373b15aa68e9e25a70d0fc372e8cc9327"
+        events:
+          - event: CampaignCreated(uint256 indexed campaignId, address indexed campaign, address indexed creator, address governance, uint256 goal, uint256 fanSharePercent, uint256 attentionPoolPercent, uint256 deadline, string metadataURI)
+      - name: DropCampaign
+        # No address: campaigns are registered as the factory creates them.
+        events:
+          - event: Contributed(address indexed contributor, address indexed referrer, uint256 amount, uint256 shares)
+          - event: ReferralRewarded(address indexed referrer, address indexed contributor, uint256 contribution, uint256 bonusShares)
+          - event: CampaignFinalized(uint256 totalRaised, uint256 totalShares, uint256 timestamp)
+          - event: RevenueDistributed(address indexed payer, uint256 amount, uint256 creatorCut, uint256 fanCut)
+          - event: RevenueClaimed(address indexed holder, uint256 amount)
+field_selection:
+  transaction_fields:
+    - hash

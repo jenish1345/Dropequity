@@ -1,0 +1,64 @@
+# One row per DropCampaign, kept current as events arrive.
+type Campaign {
+  id: ID! # campaign address, lowercase
+  campaignId: BigInt!
+  creator: String!
+  governance: String!
+  goal: BigInt!
+  fanSharePercent: Int!
+  attentionPoolPercent: Int!
+  deadline: BigInt!
+  metadataURI: String!
+  createdAt: Int!
+  totalRaised: BigInt!
+  contributionCount: Int!
+  referredCount: Int!
+  bonusSharesMinted: BigInt!
+  finalized: Boolean!
+  finalizedAt: Int
+  totalRevenue: BigInt!
+  creatorRevenue: BigInt!
+  fanRevenue: BigInt!
+  fanRevenueClaimed: BigInt!
+}
+
+type Contribution {
+  id: ID! # chainId_block_logIndex
+  campaign: String! @index
+  contributor: String!
+  referrer: String # null when not referred
+  amount: BigInt!
+  shares: BigInt!
+  bonusShares: BigInt! # filled in by the ReferralRewarded event of the same transaction
+  timestamp: Int!
+  txHash: String!
+}
+
+# Attention Leaderboard, per campaign.
+type CampaignReferrer {
+  id: ID! # campaign_referrer
+  campaign: String! @index
+  referrer: String!
+  conversions: Int!
+  bonusShares: BigInt!
+  referredVolume: BigInt!
+}
+
+# Attention Leaderboard, across every drop.
+type Referrer {
+  id: ID! # referrer address, lowercase
+  conversions: Int!
+  bonusShares: BigInt!
+  referredVolume: BigInt!
+}
+
+type RevenueDistribution {
+  id: ID!
+  campaign: String! @index
+  payer: String!
+  amount: BigInt!
+  creatorCut: BigInt!
+  fanCut: BigInt!
+  timestamp: Int!
+  txHash: String!
+}

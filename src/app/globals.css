@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+/* THE OWNERSHIP DROP — DropOwn identity tokens */
+:root {
+  --ink: #0b0b0f;
+  --paper: #f6f2ea;
+  --signal: #4f46e5;
+  --signal-soft: #e0e7ff;
+  --go: #10b981;
+  --go-soft: #d1fae5;
+  --stop: #ef4444;
+  --stop-soft: #fee2e2;
+  --gold: #f59e0b;
+  --gold-soft: #fef3c7;
+  --white: #ffffff;
+  --shadow-drop: 0 8px 24px rgba(11, 11, 15, 0.08);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-go: var(--go);
+  --color-go-soft: var(--go-soft);
+  --color-stop: var(--stop);
+  --color-stop-soft: var(--stop-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-white: var(--white);
+  /* Clash Display and General Sans are Fontshare faces, loaded from Fontshare in layout.tsx. */
+  --font-display: "Clash Display", "Arial Narrow", ui-sans-serif, sans-serif;
+  --font-sans: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
+  --shadow-drop: var(--shadow-drop);
+}
+
+html {
+  background: var(--ink);
+  color-scheme: dark;
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--white);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* Indigo on ink is too quiet for a focus ring; switch to paper there. */
+.on-ink :focus-visible,
+.on-ink:focus-visible {
+  outline-color: var(--paper);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Fine ledger grid behind ink sections: hairlines only. */
+.ledger-lines {
+  background-image:
+    linear-gradient(to right, rgba(246, 242, 234, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(246, 242, 234, 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@keyframes drop-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
+.live-dot {
+  animation: drop-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes drop-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spinner {
+  animation: drop-spin 0.8s linear infinite;
+}
+
+/* Skeleton placeholders: a slow opacity pulse, never a layout shift. */
+@keyframes drop-skeleton {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.skeleton {
+  border-radius: 6px;
+  background: currentColor;
+  opacity: 0.55;
+  animation: drop-skeleton 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot,
+  .spinner,
+  .skeleton {
+    animation: none;
+  }
+}
